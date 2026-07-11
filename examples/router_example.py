@@ -13,7 +13,7 @@ Requirements
     pip install juiceplug[gpu]
 """
 
-from juiceplug import AdapterRouter, JuicedModel
+from juiceplug import AdapterRouter, EmbeddingAdapterRouter, JuicedModel
 
 
 def main() -> None:
@@ -46,14 +46,41 @@ def main() -> None:
         "What's the weather like today?",  # -> default (None)
     ]
 
-    print("=== Routing decisions ===\n")
+    print("=== V1: Keyword-overlap Routing ===")
     for q in test_queries:
         adapter = router.route(q)
         print(f"  Q: {q}")
         print(f"  -> {adapter or '(base model, no adapter)'}\n")
 
     # ------------------------------------------------------------------
-    # 3.  (Optional) Load a model with the router
+    # 3.  Set up an embedding-based router (requires [router] extra)
+    # ------------------------------------------------------------------
+    try:
+        embed_router = EmbeddingAdapterRouter(default_adapter=None, threshold=0.2)
+        # Note: We can pass actual descriptions instead of just keywords!
+        embed_router.add_route(
+            "your-username/juiceplug-reasoning-general",
+            ["Provides step by step logical reasoning, explanation, and thought process."]
+        )
+        embed_router.add_route(
+            "your-username/juiceplug-code",
+            ["Code debugging, writing functions, fixing bugs, and reading stack traces."]
+        )
+        embed_router.add_route(
+            "your-username/juiceplug-legal",
+            ["Legal contracts, liability clauses, statutes, and regulation analysis."]
+        )
+
+        print("=== V2: Embedding-based Routing ===")
+        for q in test_queries:
+            adapter = embed_router.route(q)
+            print(f"  Q: {q}")
+            print(f"  -> {adapter or '(base model, no adapter)'}\n")
+    except ImportError:
+        print("Skipping EmbeddingAdapterRouter demo (sentence-transformers not installed).")
+
+    # ------------------------------------------------------------------
+    # 4.  (Optional) Load a model with the router
     # ------------------------------------------------------------------
     # Uncomment the lines below once you have real adapters published:
     #

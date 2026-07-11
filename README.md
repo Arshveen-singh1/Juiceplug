@@ -1,5 +1,9 @@
 # JuicePlug ⚡
 
+[![PyPI version](https://img.shields.io/pypi/v/juiceplug.svg)](https://pypi.org/project/juiceplug/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![CI](https://github.com/Arshveen-singh1/Juiceplug/actions/workflows/tests.yml/badge.svg)](https://github.com/Arshveen-singh1/Juiceplug/actions/workflows/tests.yml)
+
 **Plug-and-play reasoning adapters + live web tools for any fine-tuned or from-scratch LLM.**
 
 JuicePlug lets you take a model you already trained — or a stock base model — and bolt on, without retraining it from scratch:
